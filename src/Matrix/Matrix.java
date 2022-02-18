@@ -6,12 +6,15 @@ public class Matrix {
     private int m = 20;
     private int n = 20;
     private int randMax = 10;
-    private int[][] matrix = new int[m][n];
+    private int[][] matrix;
 
-    public Matrix () {}
+    public Matrix () {
+        matrix = new int[m][n];
+    }
     public Matrix (int rows, int cols) {
         m = rows;
         n = cols;
+        matrix = new int[m][n];
     }
 
     public void zeroMatrix() {

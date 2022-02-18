@@ -9,30 +9,30 @@ public class Main {
         int n = 20;
         int numThreads = 5;
 
-        Matrix matrix1 = new Matrix();
+        Matrix matrix1 = new Matrix(m,n);
         matrix1.populateMatrix();
         System.out.println("Matrix 1");
         matrix1.printMatrix();
 
-        Matrix matrix2 = new Matrix();
+        Matrix matrix2 = new Matrix(m,n);
         matrix2.populateMatrix();
         System.out.println("Matrix 2");
         matrix2.printMatrix();
 
-        Matrix resultMatrix1 = new Matrix();
+        Matrix resultMatrix1 = new Matrix(m,n);
         resultMatrix1.zeroMatrix();
-        Matrix resultMatrix2 = new Matrix();
+        Matrix resultMatrix2 = new Matrix(m,n);
         resultMatrix2.zeroMatrix();
 
         // threaded workflow
         System.out.println("----Threaded multiplication----");
         System.out.println("Multiplying matrices...");
         Instant startThreaded = Instant.now();
-        Thread threads[] = new Thread[numThreads];
+        Thread[] threads = new Thread[numThreads];
         for (int i = 0; i < numThreads; i++) {
             int rowStart = n/numThreads*i;
             int rowEnd = n/numThreads*(i+1);
-            threads[i] = new Thread(new MatrixMultiplication(matrix1, matrix2, resultMatrix1, rowStart, rowEnd));
+            threads[i] = new Thread(new MatrixMultiplication(matrix1, matrix2, resultMatrix1, rowStart, rowEnd, m, n));
             threads[i].start();
         }
 
@@ -54,7 +54,7 @@ public class Main {
         System.out.println("----Unthreaded multiplication----");
         System.out.println("Multiplying matrices...");
         Instant startNoThread = Instant.now();
-        MatrixMultiplication noThread = new MatrixMultiplication(matrix1, matrix2, resultMatrix2, 0, n);
+        MatrixMultiplication noThread = new MatrixMultiplication(matrix1, matrix2, resultMatrix2, 0, n, m, n);
         noThread.run();
         Instant endNoThread = Instant.now();
         long timeElapsedNoThread = Duration.between(startNoThread, endNoThread).toMillis();
